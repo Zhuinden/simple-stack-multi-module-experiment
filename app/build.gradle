@@ -1,0 +1,44 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+apply from: '../deps.gradle'
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+    defaultConfig {
+        applicationId "com.zhuinden.simplestackmultimodule"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(":common")
+    implementation project(":navigation")
+    implementation project(":feature_splash")
+    implementation project(":feature_main")
+
+    kapt deps.daggerCompiler
+    kapt deps.daggerAndroidProcessor
+
+    implementation deps.kotlin
+    implementation deps.appcompat
+    implementation deps.coreKtx
+    implementation deps.constraintLayout
+    testImplementation deps.junit
+    androidTestImplementation deps.androidxTest
+    androidTestImplementation deps.espressoCore
+}

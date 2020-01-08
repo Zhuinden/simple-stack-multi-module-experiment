@@ -1,0 +1,1 @@
+include ':app', ':navigation', ':feature_splash', ':common', ':feature_main'
