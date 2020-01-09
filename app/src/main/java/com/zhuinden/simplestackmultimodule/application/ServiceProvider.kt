@@ -3,6 +3,7 @@ package com.zhuinden.simplestackmultimodule.application
 import com.zhuinden.simplestack.ScopedServices
 import com.zhuinden.simplestack.ServiceBinder
 import com.zhuinden.simplestackmoduleexample.common.ScopedService
+import com.zhuinden.simplestackmoduleexample.navigation.core.BaseKey
 import javax.inject.Inject
 import javax.inject.Provider
 
