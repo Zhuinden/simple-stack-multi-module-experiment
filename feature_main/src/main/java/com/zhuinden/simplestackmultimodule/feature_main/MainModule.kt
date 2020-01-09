@@ -12,8 +12,15 @@ import dagger.multibindings.IntoMap
 import dagger.multibindings.IntoSet
 import javax.inject.Named
 
-@Module(includes = [MainServiceModule::class])
-abstract class MainModule {
+@Module(includes = [MainAbstractModule::class])
+object MainModule {
+    @Provides
+    @JvmStatic
+    fun service(): Class<MainService> = MainService::class.java
+}
+
+@Module
+abstract class MainAbstractModule {
     @Binds
     @IntoMap
     @NavigationKey(MainKey::class)
@@ -33,10 +40,4 @@ abstract class MainModule {
     @IntoSet
     @Named("main")
     abstract fun service(clazz: Class<MainService>): Class<out ScopedService>
-}
-
-@Module
-class MainServiceModule {
-    @Provides
-    fun service(): Class<MainService> = MainService::class.java
 }
