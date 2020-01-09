@@ -12,6 +12,6 @@ object ServiceRegistry {
             return Collections.emptyList()
         }
         val serviceClasses = keyMapping.get(key.javaClass)
-        return serviceClasses!!.map { it.javaClass.name }
+        return serviceClasses!!.map { it.name }
     }
 }
