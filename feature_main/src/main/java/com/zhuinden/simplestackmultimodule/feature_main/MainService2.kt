@@ -5,8 +5,8 @@ import androidx.annotation.Keep
 import com.zhuinden.simplestackmoduleexample.common.ScopedService
 import javax.inject.Inject
 
-class MainService @Inject constructor(): ScopedService {
+class MainService2 @Inject constructor(): ScopedService {
     fun logSuccess() {
-        Log.i("MainService", "Service is loaded successfully [${hashCode()}]")
+        Log.i("MainService2", "Service is also loaded successfully [${hashCode()}]")
     }
 }

@@ -23,3 +23,5 @@ fun Backstack.replaceHistory(direction: Int, vararg keys: Any) {
 
 // service helpers
 inline fun <reified T: ScopedService> Backstack.lookup(): T = lookupService(T::class.java.name)
+
+inline fun <reified T: ScopedService> View.scopedService(): Lazy<T> = lazy { backstack.lookup<T>() }
