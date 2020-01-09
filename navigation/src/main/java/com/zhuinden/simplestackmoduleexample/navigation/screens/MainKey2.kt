@@ -6,6 +6,6 @@ import com.zhuinden.simplestackmoduleexample.navigation.core.BaseKey
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class MainKey(private val placeholder: String = ""): BaseKey(), ScopeKey.Child {
+data class MainKey2(private val placeholder: String = ""): BaseKey(), ScopeKey.Child {
     override fun getParentScopes(): List<String> = ServiceRegistry.resolveServices(this)
 }

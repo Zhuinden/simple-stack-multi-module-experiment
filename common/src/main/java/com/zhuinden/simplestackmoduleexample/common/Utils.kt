@@ -6,9 +6,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.view.View
-import android.view.ViewGroup
 import android.view.ViewTreeObserver
-import androidx.annotation.LayoutRes
 import com.bartoszlipinski.viewpropertyobjectanimator.ViewPropertyObjectAnimator
 
 
@@ -29,6 +27,10 @@ fun View.objectAnimate() = ViewPropertyObjectAnimator.animate(this)
 private typealias OnMeasuredCallback = (view: View, width: Int, height: Int) -> Unit
 
 inline fun View.waitForMeasure(crossinline callback: OnMeasuredCallback) {
+    if(isInEditMode) {
+        return
+    }
+
     val view = this
     val width = view.getWidth()
     val height = view.getHeight()
@@ -129,4 +131,8 @@ fun View.show() {
 
 fun View.hide() {
     this.visibility = View.GONE
+}
+
+fun View.onClick(clickListener: (View) -> Unit) {
+    setOnClickListener(clickListener)
 }
