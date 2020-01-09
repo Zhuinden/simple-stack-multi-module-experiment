@@ -58,6 +58,7 @@ class MainActivity : AppCompatActivity(), StateChanger {
 
         val viewFactory = viewFactories.get(newKey.javaClass)!!
         val newView = viewFactory.inflateView(stateChange.createContext(this, newKey), root)
+        Navigator.restoreViewFromState(newView)
 
         if (previousView == null) {
             root.removeView(previousView)
