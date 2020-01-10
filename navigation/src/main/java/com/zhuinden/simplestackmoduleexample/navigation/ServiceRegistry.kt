@@ -5,17 +5,11 @@ import com.zhuinden.simplestackmoduleexample.navigation.core.BaseKey
 import java.util.*
 
 object ServiceRegistry {
-    val keyMapping: MutableMap<Class<out BaseKey>, @JvmSuppressWildcards MutableSet<Class<out ScopedService>>> = mutableMapOf()
+    @PublishedApi
+    internal val keyMapping: MutableMap<Class<out BaseKey>, @JvmSuppressWildcards MutableSet<Class<out ScopedService>>> = mutableMapOf()
 
-    fun resolveServices(key: BaseKey): List<String> {
-        if(!keyMapping.containsKey(key.javaClass)) {
-            return Collections.emptyList()
-        }
-        val serviceClasses = keyMapping.get(key.javaClass)
-        return serviceClasses!!.map { it.name }
-    }
-
-    inline fun <reified S: ScopedService> addServiceForKey(classKey: Class<out BaseKey>) {
+    @PublishedApi
+    internal inline fun <reified S: ScopedService> addServiceForKey(classKey: Class<out BaseKey>) {
         if(!keyMapping.containsKey(classKey)) {
             keyMapping.put(classKey, mutableSetOf())
         }
@@ -25,6 +19,14 @@ object ServiceRegistry {
 
     inline fun registerServices(classKey: Class<out BaseKey>, builder: RegistryBuilder.() -> Unit) {
         RegistryBuilder(classKey).apply(builder)
+    }
+
+    fun resolveServices(key: BaseKey): List<String> {
+        if(!keyMapping.containsKey(key.javaClass)) {
+            return Collections.emptyList()
+        }
+        val serviceClasses = keyMapping.get(key.javaClass)
+        return serviceClasses!!.map { it.name }
     }
 
     class RegistryBuilder(val classKey: Class<out BaseKey>) {

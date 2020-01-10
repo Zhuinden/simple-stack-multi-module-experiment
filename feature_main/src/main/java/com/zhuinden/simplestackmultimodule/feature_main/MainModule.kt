@@ -2,6 +2,7 @@ package com.zhuinden.simplestackmultimodule.feature_main
 
 import com.zhuinden.simplestackmoduleexample.common.ScopedService
 import com.zhuinden.simplestackmoduleexample.common.ServiceKey
+import com.zhuinden.simplestackmoduleexample.navigation.ServiceRegistry
 import com.zhuinden.simplestackmoduleexample.navigation.core.ViewFactory
 import com.zhuinden.simplestackmoduleexample.navigation.di.NavigationKey
 import com.zhuinden.simplestackmoduleexample.navigation.screens.MainKey
@@ -10,16 +11,35 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
-import dagger.multibindings.IntoSet
-import javax.inject.Named
+import dagger.multibindings.StringKey
 
-@Module(includes = [
-    MainServiceModule::class,
-    MainService2Module::class,
-    MainKeyModule::class,
-    MainKey2Module::class
-])
-abstract class MainModule
+@Module(
+    includes = [
+        MainServiceModule::class,
+        MainService2Module::class,
+        MainKeyModule::class,
+        MainKey2Module::class
+    ]
+)
+class MainModule {
+    @Provides
+    @IntoMap
+    @StringKey("main")
+    fun initializer(): String = "main"
+
+    companion object {
+        init {
+            ServiceRegistry.registerServices(MainKey::class.java) {
+                add<MainService>()
+                add<MainService2>()
+            }
+
+            ServiceRegistry.registerServices(MainKey2::class.java) {
+                add<MainService2>()
+            }
+        }
+    }
+}
 
 @Module
 abstract class MainKeyModule {
