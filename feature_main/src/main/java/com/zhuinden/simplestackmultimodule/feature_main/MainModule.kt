@@ -27,21 +27,6 @@ abstract class MainKeyModule {
     @IntoMap
     @NavigationKey(MainKey::class)
     abstract fun viewFactory(viewFactory: MainViewFactory): ViewFactory
-
-    @Binds
-    @IntoSet
-    @Named("MainKey")
-    abstract fun service(clazz: Class<MainService>): Class<out ScopedService>
-    
-    @Binds
-    @IntoSet
-    @Named("MainKey")
-    abstract fun service2(clazz: Class<MainService2>): Class<out ScopedService>
-    
-    @Binds
-    @IntoMap
-    @NavigationKey(MainKey::class)
-    abstract fun services(@Named("MainKey") services: @JvmSuppressWildcards Set<Class<out ScopedService>>): @JvmSuppressWildcards Set<Class<out ScopedService>>
 }
 
 
@@ -51,42 +36,20 @@ abstract class MainKey2Module {
     @IntoMap
     @NavigationKey(MainKey2::class)
     abstract fun viewFactory(viewFactory: MainView2Factory): ViewFactory
-
-    @Binds
-    @IntoSet
-    @Named("MainKey2")
-    abstract fun service2(clazz: Class<MainService2>): Class<out ScopedService>
-
-    @Binds
-    @IntoMap
-    @NavigationKey(MainKey2::class)
-    abstract fun services(@Named("MainKey2") services: @JvmSuppressWildcards Set<Class<out ScopedService>>): @JvmSuppressWildcards Set<Class<out ScopedService>>
 }
 
-@Module(includes = [MainServiceModule.ObjectModule::class])
+@Module
 abstract class MainServiceModule {
     @Binds
     @IntoMap
     @ServiceKey(MainService::class)
     abstract fun mainService(mainService: MainService): ScopedService
-
-    @Module
-    class ObjectModule {
-        @Provides
-        fun service(): Class<MainService> = MainService::class.java
-    }
 }
 
-@Module(includes = [MainService2Module.ObjectModule::class])
+@Module
 abstract class MainService2Module {
     @Binds
     @IntoMap
     @ServiceKey(MainService2::class)
     abstract fun mainService2(mainService: MainService2): ScopedService
-
-    @Module
-    class ObjectModule {
-        @Provides
-        fun service2(): Class<MainService2> = MainService2::class.java
-    }
 }
