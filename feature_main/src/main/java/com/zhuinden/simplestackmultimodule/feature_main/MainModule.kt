@@ -2,6 +2,7 @@ package com.zhuinden.simplestackmultimodule.feature_main
 
 import com.zhuinden.simplestackmoduleexample.common.ScopedService
 import com.zhuinden.simplestackmoduleexample.common.ServiceKey
+import com.zhuinden.simplestackmoduleexample.navigation.ServiceRegistry
 import com.zhuinden.simplestackmoduleexample.navigation.core.ViewFactory
 import com.zhuinden.simplestackmoduleexample.navigation.di.NavigationKey
 import com.zhuinden.simplestackmoduleexample.navigation.screens.MainKey
@@ -10,16 +11,35 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.multibindings.IntoMap
-import dagger.multibindings.IntoSet
-import javax.inject.Named
+import dagger.multibindings.StringKey
 
-@Module(includes = [
-    MainServiceModule::class,
-    MainService2Module::class,
-    MainKeyModule::class,
-    MainKey2Module::class
-])
-abstract class MainModule
+@Module(
+    includes = [
+        MainServiceModule::class,
+        MainService2Module::class,
+        MainKeyModule::class,
+        MainKey2Module::class
+    ]
+)
+class MainModule {
+    @Provides
+    @IntoMap
+    @StringKey("main")
+    fun initializer(): String = "main"
+
+    companion object {
+        init {
+            ServiceRegistry.registerServices(MainKey::class.java) {
+                add<MainService>()
+                add<MainService2>()
+            }
+
+            ServiceRegistry.registerServices(MainKey2::class.java) {
+                add<MainService2>()
+            }
+        }
+    }
+}
 
 @Module
 abstract class MainKeyModule {
@@ -27,21 +47,6 @@ abstract class MainKeyModule {
     @IntoMap
     @NavigationKey(MainKey::class)
     abstract fun viewFactory(viewFactory: MainViewFactory): ViewFactory
-
-    @Binds
-    @IntoSet
-    @Named("MainKey")
-    abstract fun service(clazz: Class<MainService>): Class<out ScopedService>
-    
-    @Binds
-    @IntoSet
-    @Named("MainKey")
-    abstract fun service2(clazz: Class<MainService2>): Class<out ScopedService>
-    
-    @Binds
-    @IntoMap
-    @NavigationKey(MainKey::class)
-    abstract fun services(@Named("MainKey") services: @JvmSuppressWildcards Set<Class<out ScopedService>>): @JvmSuppressWildcards Set<Class<out ScopedService>>
 }
 
 
@@ -51,42 +56,20 @@ abstract class MainKey2Module {
     @IntoMap
     @NavigationKey(MainKey2::class)
     abstract fun viewFactory(viewFactory: MainView2Factory): ViewFactory
-
-    @Binds
-    @IntoSet
-    @Named("MainKey2")
-    abstract fun service2(clazz: Class<MainService2>): Class<out ScopedService>
-
-    @Binds
-    @IntoMap
-    @NavigationKey(MainKey2::class)
-    abstract fun services(@Named("MainKey2") services: @JvmSuppressWildcards Set<Class<out ScopedService>>): @JvmSuppressWildcards Set<Class<out ScopedService>>
 }
 
-@Module(includes = [MainServiceModule.ObjectModule::class])
+@Module
 abstract class MainServiceModule {
     @Binds
     @IntoMap
     @ServiceKey(MainService::class)
     abstract fun mainService(mainService: MainService): ScopedService
-
-    @Module
-    class ObjectModule {
-        @Provides
-        fun service(): Class<MainService> = MainService::class.java
-    }
 }
 
-@Module(includes = [MainService2Module.ObjectModule::class])
+@Module
 abstract class MainService2Module {
     @Binds
     @IntoMap
     @ServiceKey(MainService2::class)
     abstract fun mainService2(mainService: MainService2): ScopedService
-
-    @Module
-    class ObjectModule {
-        @Provides
-        fun service2(): Class<MainService2> = MainService2::class.java
-    }
 }
