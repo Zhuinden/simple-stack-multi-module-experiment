@@ -17,8 +17,8 @@ object ServiceRegistry {
         set.add(S::class.java)
     }
 
-    inline fun registerServices(classKey: Class<out BaseKey>, builder: RegistryBuilder.() -> Unit) {
-        RegistryBuilder(classKey).apply(builder)
+    inline fun <reified T: BaseKey> registerServices(builder: RegistryBuilder.() -> Unit) {
+        RegistryBuilder(T::class.java).apply(builder)
     }
 
     fun resolveServices(key: BaseKey): List<String> {

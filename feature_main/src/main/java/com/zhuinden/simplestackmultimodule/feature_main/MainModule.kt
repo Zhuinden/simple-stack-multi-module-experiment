@@ -29,12 +29,12 @@ class MainModule {
 
     companion object {
         init {
-            ServiceRegistry.registerServices(MainKey::class.java) {
+            ServiceRegistry.registerServices<MainKey> {
                 add<MainService>()
                 add<MainService2>()
             }
 
-            ServiceRegistry.registerServices(MainKey2::class.java) {
+            ServiceRegistry.registerServices<MainKey2> {
                 add<MainService2>()
             }
         }
