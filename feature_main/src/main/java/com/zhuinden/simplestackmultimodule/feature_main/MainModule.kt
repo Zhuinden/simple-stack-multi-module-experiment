@@ -1,7 +1,7 @@
 package com.zhuinden.simplestackmultimodule.feature_main
 
-import com.zhuinden.simplestackmoduleexample.common.ScopedService
-import com.zhuinden.simplestackmoduleexample.common.ServiceKey
+import com.zhuinden.simplestackmoduleexample.navigation.core.ScopedService
+import com.zhuinden.simplestackmoduleexample.navigation.di.ServiceKey
 import com.zhuinden.simplestackmoduleexample.navigation.ServiceRegistry
 import com.zhuinden.simplestackmoduleexample.navigation.core.ViewFactory
 import com.zhuinden.simplestackmoduleexample.navigation.di.NavigationKey
@@ -31,7 +31,8 @@ class MainModule {
         init {
             ServiceRegistry.registerServices<MainKey> {
                 add<MainService>()
-                add<MainService2>()
+                bindAs<MainService>(MainView.ActionHandler::class)
+                // add<MainService2>() // this breaks HandlesBack for now, tracked in https://github.com/Zhuinden/simple-stack/issues/210
             }
 
             ServiceRegistry.registerServices<MainKey2> {
