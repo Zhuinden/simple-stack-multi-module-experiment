@@ -32,7 +32,7 @@ class MainModule {
             ServiceRegistry.registerServices<MainKey> {
                 add<MainService>()
                 bindAs<MainService>(MainView.ActionHandler::class)
-                // add<MainService2>() // this breaks HandlesBack for now, tracked in https://github.com/Zhuinden/simple-stack/issues/210
+                add<MainService2>()
             }
 
             ServiceRegistry.registerServices<MainKey2> {
