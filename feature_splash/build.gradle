@@ -34,6 +34,9 @@ dependencies {
     implementation project(':common')
     implementation project(':navigation')
 
+    kapt deps.daggerCompiler
+    kapt deps.daggerAndroidProcessor
+
     implementation deps.kotlin
     implementation deps.appcompat
     implementation deps.coreKtx
